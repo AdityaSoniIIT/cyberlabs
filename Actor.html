@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Home Page</title>
+  <style>
+
+  </style>
+</head>
+<body>
+  <style>
+<style>
+  .container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .container.selected {
+    background-color:  green;
+  }
+
+  .container img {
+    width: 100px; /* Adjust the width as needed */
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .container-text {
+    font-weight: bold;
+  }
+</style>
+
+  </style>
+</head>
+<body>
+  <div>
+  <button id="connect-button">Connect Metamask</button>
+    <script>
+      document.getElementById('connect-button').addEventListener('click', event => {
+        let account;
+        let button = event.target;
+        ethereum.request({method: 'eth_requestAccounts'}).then(accounts => {
+          account = accounts[0];
+          console.log(account);
+          button.textContent = account;
+
+          ethereum.request({method: 'eth_getBalance' , params: [account, 'latest']}).then(result => {
+            console.log(result);
+            let wei = parseInt(result,16);
+            let balance = wei / (10**18);
+            console.log(balance + " ETH");
+          });
+        });
+      });
+    </script>  
+    </div>
+
+
+  <div class="container" id="Actor1" onclick="vote('Actor1');">
+    <img src="https://m.media-amazon.com/images/M/MV5BODI4NDY1NzkyM15BMl5BanBnXkFtZTgwNzM3MDM0OTE@._V1_UY209_CR13,0,140,209_AL_.jpg" alt="Akshay Kumar">
+    <div class="container-text">Akshay Kumar</div>
+  </div>
+
+  <div class="container" id="Actor2" onclick="vote('Actor2');">
+    <img src="https://m.media-amazon.com/images/M/MV5BZDk1ZmU0NGYtMzQ2Yi00N2NjLTkyNWEtZWE2NTU4NTJiZGUzXkEyXkFqcGdeQXVyMTExNDQ2MTI@._V1_UY209_CR3,0,140,209_AL_.jpg" alt="Shahrukh Khan">
+    <div class="container-text">Shahrukh Khan</div>
+  </div>
+
+  <div class="container" id="Actor3" onclick="vote('Actor3');">
+    <img src="https://m.media-amazon.com/images/M/MV5BNTk1OTUxMzIzMV5BMl5BanBnXkFtZTcwMzMxMjI0Nw@@._V1_UY209_CR6,0,140,209_AL_.jpg" alt="Amitabh Bachchan">
+    <div class="container-text">Amitabh Bachchan</div>
+  </div>
+
+  <div class="container" id="Actor4" onclick="vote('Actor4');">
+    <img src="https://m.media-amazon.com/images/M/MV5BMjUyMWE5MjUtMDlkMC00ODc0LThkOTgtNjZhNDgyMTU5ZDhlXkEyXkFqcGdeQXVyMTExNDQ2MTI@._V1_UX140_CR0,0,140,209_AL_.jpg" alt="Anil Kapoor">
+    <div class="container-text">Anil Kapoor</div>
+  </div>
+
+  <div class="container" id="Actor5" onclick="vote('Actor5');">
+    <img src="https://m.media-amazon.com/images/M/MV5BMjI4MzQyODYwOF5BMl5BanBnXkFtZTgwMTcxMTIzOTE@._V1_UY209_CR87,0,140,209_AL_.jpg" alt="Chiranjeevi">
+    <div class="container-text">Nana Patekar</div>
+  </div>
+
+  <div class="container" id="Actor6" onclick="vote('Actor6');">
+    <img src="https://m.media-amazon.com/images/M/MV5BNGFlYzAyYjgtNzRjNS00NmE4LTliOGYtYzBkYzU5MzRhMDM0XkEyXkFqcGdeQXVyMTExNDQ2MTI@._V1_UX140_CR0,0,140,209_AL_.jpg" alt="Deepika Padukone">
+    <div class="container-text">Deepika Padukone</div>
+  </div>
+
+  <div class="container" id="Actor7" onclick="vote('Actor7');">
+    <img src="https://m.media-amazon.com/images/M/MV5BNzEwNDgwMTk3Nl5BMl5BanBnXkFtZTgwNjMwOTU4MDI@._V1_UY209_CR14,0,140,209_AL_.jpg" alt="Govinda">
+    <div class="container-text">Govinda</div>
+  </div>
+
+  <div class="container" id="Actor8" onclick="vote('Actor8');">
+    <img src="https://m.media-amazon.com/images/M/MV5BOGM4NDFlNzItNzM1YS00Njk5LThlNDItZmRjNDZlYWY0ZjJkXkEyXkFqcGdeQXVyNDI3NjU1NzQ@._V1_UX140_CR0,0,140,209_AL_.jpg" alt="Hrithik Roshan">
+    <div class="container-text">Hrithik Roshan</div>
+  </div>
+
+  <div class="container" id="Actor9" onclick="vote('Actor9');">
+    <img src="https://m.media-amazon.com/images/M/MV5BNTk0OTFkZGItYTQxMi00YTUwLTlkMGEtMTIyZDNlNDc0MzRlXkEyXkFqcGdeQXVyMTgzNTY5OTc@._V1_UY209_CR34,0,140,209_AL_.jpg" alt="Madhuri Dixit">
+    <div class="container-text">Madhuri Dixit</div>
+  </div>
+  <button onclick="confirmVotes()">Confirm Votes</button>
+
+
+  <script>
+    let selectedActors = [];
+    let votingConfirmed = false;
+  
+    function vote(actorId) {
+      if (votingConfirmed) {
+        alert("Voting has been confirmed. You cannot vote again.");
+        return;
+      }
+  
+      const actorElement = document.getElementById(actorId);
+  
+      const index = selectedActors.indexOf(actorElement);
+  
+      if (index === -1) {
+        // If the actor is not already selected, add it to the array
+        selectedActors.push(actorElement);
+        actorElement.classList.add("selected");
+      } else {
+        // If the actor is already selected, remove it from the array
+        selectedActors.splice(index, 1);
+        actorElement.classList.remove("selected");
+      }
+    }
+  
+    function confirmVotes() {
+      if (selectedActors.length === 0) {
+        alert("Please select at least one actor before confirming your vote.");
+        return;
+      }
+  
+      if (votingConfirmed) {
+        alert("Voting has already been confirmed. You cannot confirm again.");
+        return;
+      }
+  
+      // Highlight selected actors and Confirm Votes button
+      selectedActors.forEach(actorElement => {
+        actorElement.style.backgroundColor = "green";
+      });
+  
+      const confirmButton = document.querySelector('button');
+      confirmButton.style.backgroundColor = "green";
+  
+      // Display a message for each selected actor
+      const selectedActorsText = selectedActors.map(actorElement => actorElement.textContent).join(', ');
+      alert(`Votes confirmed for: ${selectedActorsText}`);
+      votingConfirmed = true;
+    }
+  </script>
+  
+
+
+</body>
+</html>

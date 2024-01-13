@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="button"] {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+        <input type="email" name="email" id="email">
+        <input type="password" name="password" id="password">
+        <input type="button" value="login" id="login">
+    </div>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getDatabase,
+        get,
+        ref,
+        child,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBvYaTyrcR3uVuBq5lqmM2gnEipowsEnv4",
+        authDomain: "shinerweblogin.firebaseapp.com",
+        projectId: "shinerweblogin",
+        storageBucket: "shinerweblogin.appspot.com",
+        messagingSenderId: "284789708360",
+        appId: "1:284789708360:web:d3acbc2dedb1a32fdcaa7d",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase();
+      const auth = getAuth(app);
+      const dbref = ref(db);
+
+      let Email = document.getElementById("email");
+      let Password = document.getElementById("password");
+      let login = document.getElementById("login");
+
+      let SignInUser = (evt) => {
+        evt.preventDefault();
+
+        signInWithEmailAndPassword(auth, Email.value, Password.value)
+          .then((userCredential) => {
+            console.log(userCredential);
+            get(child(dbref, "UsersAuthList/" + userCredential.user.uid)).then(
+              (snapshot) => {
+                if (snapshot.exists) {
+                  sessionStorage.setItem(
+                    "user-info",
+                    JSON.stringify({
+                      firstname: snapshot.val().firstname,
+                      lastname: snapshot.val().lastname,
+                    })
+                  );
+                  sessionStorage.setItem(
+                    "user-creds",
+                    JSON.stringify(userCredential.user)
+                  );
+                }
+            }
+            );
+            window.location.href = "home.html";
+            alert("user loged in!");
+          })
+          .catch((error) => {
+            alert(error.message);
+            console.log(error.code);
+            console.log(error.message);
+          });
+      };
+
+      login.addEventListener("click", SignInUser);
+    </script>
+  </body>
+</html>

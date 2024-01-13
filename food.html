@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Home Page</title>
+    <style>
+      /* Define a class for the selected state */
+      .selected {
+        background-color: green;
+      }
+
+      /* Style the containers */
+      .container {
+        cursor: pointer;
+        margin: 10px;
+        padding: 15px;
+        border: 1px solid #dd1313;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Style the button */
+      button {
+        margin-top: 20px;
+        padding: 10px;
+      }
+
+      /* Hover effect for better user experience */
+      .container:hover {
+        background-color: #b14444;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-size: cover;
+        background-position: center;
+        color: #fefefe;
+        background-color: black;
+      }
+
+      header {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .main-heading {
+        font-size: 2em;
+        margin: 0;
+      }
+
+      .secondary-heading {
+        font-size: 1.2em;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <button id="connect-button">Connect Metamask</button>
+        <script>
+          document.getElementById('connect-button').addEventListener('click', event => {
+            let account;
+            let button = event.target;
+            ethereum.request({method: 'eth_requestAccounts'}).then(accounts => {
+              account = accounts[0];
+              console.log(account);
+              button.textContent = account;
+    
+              ethereum.request({method: 'eth_getBalance' , params: [account, 'latest']}).then(result => {
+                console.log(result);
+                let wei = parseInt(result,16);
+                let balance = wei / (10**18);
+                console.log(balance + " ETH");
+              });
+            });
+          });
+        </script>  
+        </div>
+    <header>
+      <h1 class="main-heading">Foode</h1>
+      <h2 class="secondary-heading">Tell me food that you like</h2>
+    </header>
+
+    <div class="container" id="foodA" onclick="vote('foodA')">
+      <div class="container-text">Pizza</div>
+    </div>
+
+    <div class="container" id="foodB" onclick="vote('foodB')">
+      <div class="container-text">Burger</div>
+    </div>
+
+    <div class="container" id="foodC" onclick="vote('foodC')">
+      <div class="container-text">Sushi</div>
+    </div>
+
+    <div class="container" id="foodD" onclick="vote('foodD')">
+      <div class="container-text">Ice Cream</div>
+    </div>
+
+    <div class="container" id="foodE" onclick="vote('foodE')">
+      <div class="container-text">Tacos</div>
+    </div>
+
+    <div class="container" id="foodF" onclick="vote('foodF')">
+      <div class="container-text">Pasta</div>
+    </div>
+
+    <div class="container" id="foodG" onclick="vote('foodG')">
+      <div class="container-text">Sushi Rolls</div>
+    </div>
+
+    <div class="container" id="foodH" onclick="vote('foodH')">
+      <div class="container-text">Chocolate Cake</div>
+    </div>
+
+    <div class="container" id="foodI" onclick="vote('foodI')">
+      <div class="container-text">Salad</div>
+    </div>
+
+    <button onclick="confirmVotes()">Confirm Votes</button>
+    <script>
+      let selectedFoods = [];
+      let votingConfirmed = false;
+
+      function vote(foodId) {
+        if (votingConfirmed) {
+          alert("Voting has been confirmed. You cannot vote again.");
+          return;
+        }
+
+        const foodElement = document.getElementById(foodId);
+
+        const index = selectedFoods.indexOf(foodElement);
+
+        if (index === -1) {
+          // If the food is not already selected, add it to the array
+          selectedFoods.push(foodElement);
+          foodElement.classList.add("selected");
+        } else {
+          // If the food is already selected, remove it from the array
+          selectedFoods.splice(index, 1);
+          foodElement.classList.remove("selected");
+        }
+      }
+
+      function confirmVotes() {
+        if (selectedFoods.length === 0) {
+          alert("Please select at least one food before confirming your vote.");
+          return;
+        }
+
+        if (votingConfirmed) {
+          alert("Voting has already been confirmed. You cannot confirm again.");
+          return;
+        }
+
+        // Highlight selected foods and Confirm Votes button
+        selectedFoods.forEach((foodElement) => {
+          foodElement.style.backgroundColor = "green";
+        });
+
+        const confirmButton = document.querySelector("button");
+        confirmButton.style.backgroundColor = "green";
+
+        // Display a message for each selected food
+        const selectedFoodsText = selectedFoods
+          .map((foodElement) => foodElement.textContent)
+          .join(", ");
+        alert(`Votes confirmed for: ${selectedFoodsText}`);
+        votingConfirmed = true;
+      }
+    </script>
+  </body>
+</html>

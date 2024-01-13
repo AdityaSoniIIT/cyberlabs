@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Home Page</title>
+  <style>/* Define a class for the selected state */
+    .selected {
+      background-color: green;
+    }
+    
+    /* Style the containers */
+    .container {
+      cursor: pointer;
+      margin: 10px;
+      padding: 15px;
+      border: 1px solid #dd1313;
+      border-radius: 15px; /* Adjust the corner radius as needed */
+      transition: background-color 0.3s ease;
+    }
+    
+    /* Style the button */
+    button {
+      margin-top: 20px;
+      padding: 10px;
+    }
+    
+    /* Hover effect for better user experience */
+    .container:hover {
+      background-color: #b14444;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-size: cover;
+      background-position: center;
+      color: #0c0303;
+
+    }
+    
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .main-heading {
+      font-size: 2em;
+      margin: 0;
+    }
+    
+    .secondary-heading {
+      font-size: 1.2em;
+      margin: 10px 0;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 class="main-heading">IPL</h1>
+    <h2 class="secondary-heading">Tell me your favourite ipl team</h2>
+  </header>
+  <div>
+    <button id="connect-button">Connect Metamask</button>
+      <script>
+        document.getElementById('connect-button').addEventListener('click', event => {
+          let account;
+          let button = event.target;
+          ethereum.request({method: 'eth_requestAccounts'}).then(accounts => {
+            account = accounts[0];
+            console.log(account);
+            button.textContent = account;
+  
+            ethereum.request({method: 'eth_getBalance' , params: [account, 'latest']}).then(result => {
+              console.log(result);
+              let wei = parseInt(result,16);
+              let balance = wei / (10**18);
+              console.log(balance + " ETH");
+            });
+          });
+        });
+      </script>  
+      </div>
+
+  <script>
+    let selectedTeams = [];
+    let votingConfirmed = false;
+  
+    function vote(teamId) {
+      if (votingConfirmed) {
+        alert("Voting has been confirmed. You cannot vote again.");
+        return;
+      }
+  
+      const teamElement = document.getElementById(teamId);
+  
+      const index = selectedTeams.indexOf(teamElement);
+  
+      if (index === -1) {
+        // If the team is not already selected, add it to the array
+        selectedTeams.push(teamElement);
+        teamElement.classList.add("selected");
+        glowEffect(teamElement, true); // Add glow effect
+      } else {
+        // If the team is already selected, remove it from the array
+        selectedTeams.splice(index, 1);
+        teamElement.classList.remove("selected");
+        glowEffect(teamElement, false); // Remove glow effect
+      }
+    }
+  
+    function glowEffect(element, addGlow) {
+      if (addGlow) {
+        element.classList.add("glow");
+      } else {
+        element.classList.remove("glow");
+      }
+    }
+  
+    function confirmVotes() {
+      if (selectedTeams.length === 0) {
+        alert("Please select at least one team before confirming your vote.");
+        return;
+      }
+  
+      if (votingConfirmed) {
+        alert("Voting has already been confirmed. You cannot confirm again.");
+        return;
+      }
+  
+      // Highlight selected teams and Confirm Votes button
+      selectedTeams.forEach((teamElement) => {
+        teamElement.style.backgroundColor = "green";
+      });
+  
+      const confirmButton = document.querySelector("button");
+      confirmButton.style.backgroundColor = "green";
+  
+      // Display a message for each selected team
+      const selectedTeamsText = selectedTeams
+        .map((teamElement) => teamElement.textContent)
+        .join(", ");
+      alert(`Votes confirmed for: ${selectedTeamsText}`);
+      votingConfirmed = true;
+    }
+  </script>
+  
+  <!-- HTML for IPL teams -->
+  <section id="sportsman1" class="container" onclick="vote('sportsman1');">
+    <div class="photo"></div>
+    <div class="text">Mumbai Indians</div>
+  </section>
+  
+  <section id="sportsman2" class="container" onclick="vote('sportsman2');">
+    <div class="photo"></div>
+    <div class="text">Chennai Super Kings</div>
+  </section>
+  
+  <section id="sportsman3" class="container" onclick="vote('sportsman3');">
+    <div class="photo"></div>
+    <div class="text">Royal Challengers Bangalore</div>
+  </section>
+  
+  <section id="sportsman4" class="container" onclick="vote('sportsman4');">
+    <div class="photo"></div>
+    <div class="text">Delhi Capitals</div>
+  </section>
+  
+  <section id="sportsman5" class="container" onclick="vote('sportsman5');">
+    <div class="photo"></div>
+    <div class="text">Kolkata Knight Riders</div>
+  </section>
+  
+  <section id="sportsman6" class="container" onclick="vote('sportsman6');">
+    <div class="photo"></div>
+    <div class="text">Rajasthan Royals</div>
+  </section>
+  
+  <section id="sportsman7" class="container" onclick="vote('sportsman7');">
+    <div class="photo"></div>
+    <div class="text">Sunrisers Hyderabad</div>
+  </section>
+  
+  <section id="sportsman8" class="container" onclick="vote('sportsman8');">
+    <div class="photo"></div>
+    <div class="text">Punjab Kings</div>
+  </section>
+  
+  <button onclick="confirmVotes()">Confirm Votes</button>
+  
+</body>
+</html>

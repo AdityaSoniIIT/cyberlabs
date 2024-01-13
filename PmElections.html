@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Home Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Open Sans", sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .main-heading {
+      font-size: 2em;
+      color: #333;
+    }
+
+    .secondary-heading {
+      font-size: 1.5em;
+      color: #666;
+    }
+
+    .container {
+      width: 30%;
+      margin: 20px;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+      vertical-align: top;
+      box-sizing: border-box;
+      cursor: pointer; /* Change cursor on hover */
+      transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the glow effect */
+    }
+    .container:hover {
+      box-shadow: 0 0 10px 5px #8cff66; /* Glow effect on hover */
+    }
+    
+
+    .container img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .container-text {
+      padding: 20px;
+      background-color: #fff;
+      text-align: center;
+    }
+
+    @media only screen and (max-width: 768px) {
+      .container {
+        width: 48%;
+      }
+    }
+
+    @media only screen and (max-width: 480px) {
+      .container {
+        width: 100%;
+      }
+    }
+    body {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-logo {
+  width: 50px; /* Adjust the width of the logo */
+  height: 50px; /* Adjust the height of the logo */
+  margin-bottom: 10px;
+}
+
+.footer-text {
+  font-size: 1.2em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-text p {
+  margin: 5px; /* Add some spacing between the paragraphs */
+}
+
+.github-link {
+  color: #4CAF50; /* GitHub color */
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 10px;
+}
+  </style>
+</head>
+<body>
+  <div>
+    <button id="connect-button">Connect Metamask</button>
+      <script>
+        document.getElementById('connect-button').addEventListener('click', event => {
+          let account;
+          let button = event.target;
+          ethereum.request({method: 'eth_requestAccounts'}).then(accounts => {
+            account = accounts[0];
+            console.log(account);
+            button.textContent = account;
+  
+            ethereum.request({method: 'eth_getBalance' , params: [account, 'latest']}).then(result => {
+              console.log(result);
+              let wei = parseInt(result,16);
+              let balance = wei / (10**18);
+              console.log(balance + " ETH");
+            });
+          });
+        });
+      </script>  
+      </div>
+
+  <header>
+    <h1 class="main-heading">Favoourite Candidate</h1>
+    <h2 class="secondary-heading">Tell me candidate of your choice</h2>
+  </header>
+
+  <div class="container">
+
+    <div class="container-text">Modi</div>
+  </div>
+
+  <div class="container">
+    <div class="container-text">Rahul Gandhi</div>
+  </div>
+
+  <div class="container">
+    <div class="container-text">Kejriwal</div>
+  </div>
+
+  <div class="container">
+    <div class="container-text">Yogiji</div>
+  </div>
+
+  <div class="container">
+    <div class="container-text">Mamta Bannerji</div>
+  </div>
+
+  <div class="container">
+    <div class="container-text">Hemant Biswa Sharma</div>
+  </div>
+
+
+
+</body>
+</html>
